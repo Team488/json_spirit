@@ -12,16 +12,33 @@ SET(JSON_SPIRIT_SRCS
   json_spirit_writer_options.h
   json_spirit_writer_template.h )
  
-FIND_PACKAGE(Boost 1.34 REQUIRED)
+FIND_PACKAGE(Boost REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
+ADD_LIBRARY(json_spirit STATIC ${JSON_SPIRIT_SRCS})
 
-OPTION(BUILD_STATIC_LIBS "Build static libraries" OFF)
+# default install directory
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../../packages/json_spirit" CACHE PATH "default install path" FORCE)
+endif()
+# install targets
+install(
+    TARGETS json_spirit
+    EXPORT json_spirit-config
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+# install config for export group
+install(
+    EXPORT json_spirit-config
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/cmake"
+)
 
-if(BUILD_STATIC_LIBS)
-  ADD_LIBRARY(json_spirit STATIC ${JSON_SPIRIT_SRCS})
-  install(TARGETS json_spirit ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-else(BUILD_STATIC_LIBS)
-  ADD_LIBRARY(json_spirit SHARED ${JSON_SPIRIT_SRCS})
-  install(TARGETS json_spirit LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-endif(BUILD_STATIC_LIBS)
+#export includes
+install(
+  DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING PATTERN "*.h"
+) 

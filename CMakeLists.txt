@@ -4,13 +4,13 @@ PROJECT(json_spirit)
 SUBDIRS(json_spirit)
 INCLUDE_DIRECTORIES(json_spirit)
 
-OPTION(BUILD_STATIC_LIBRARIES "Build static libraries" OFF)
+OPTION(BUILD_STATIC_LIBRARIES "Build static libraries" ON)
 
 OPTION(JSON_SPIRIT_WVALUE_ENABLED "Build with support for unicode types" OFF)
 OPTION(JSON_SPIRIT_MVALUE_ENABLED "Build with support for ascii map types" OFF)
 OPTION(JSON_SPIRIT_WMVALUE_ENABLED "Build with support for unicode map types" OFF)
-OPTION(JSON_SPIRIT_DEMOS "Enable building demos" ON)
-OPTION(JSON_SPIRIT_TESTS "Enable building tests" ON)
+OPTION(JSON_SPIRIT_DEMOS "Enable building demos" OFF)
+OPTION(JSON_SPIRIT_TESTS "Enable building tests" OFF)
 
 include(GNUInstallDirs)
 
@@ -57,27 +57,3 @@ elseif(${CMAKE_CXX_COMPILER_ID} MATCHES Clang)
   set(CMAKE_CXX_LINK_FLAGS "-std=c++11")
   message("C++ Flags: ${CMAKE_CXX_FLAGS} link flags: ${CMAKE_CXX_LINK_FLAGS}")
 endif()
-
-message(${CMAKE_INSTALL_INCLUDEDIR})
-
-
-set(CPACK_PACKAGE_VERSION_MAJOR 4)
-set(CPACK_PACKAGE_VERSION_MINOR 0)
-set(CPACK_PACKAGE_VERSION_PATCH 8)
-set(CPACK_PACKAGE_DESCRIPTION "A C++ JSON Parser/Generator Implemented with Boost Spirit")
-include(CPack)
-
-INSTALL(
-  FILES
-  json_spirit/json_spirit.h
-  json_spirit/json_spirit_error_position.h
-  json_spirit/json_spirit_reader.h
-  json_spirit/json_spirit_reader_template.h
-  json_spirit/json_spirit_stream_reader.h
-  json_spirit/json_spirit_utils.h
-  json_spirit/json_spirit_value.h
-  json_spirit/json_spirit_writer.h
-  json_spirit/json_spirit_writer_template.h
-  json_spirit/json_spirit_writer_options.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/json_spirit)
-
